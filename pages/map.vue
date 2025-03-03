@@ -1,4 +1,5 @@
 <template>
+  <calcite-loader v-if="!arcgisViewReady"></calcite-loader>
   <arcgis-map
     basemap="gray-vector"
     @arcgisViewReadyChange="arcgisViewReadyChangeHandler"
@@ -9,15 +10,26 @@
   </arcgis-map>
 </template>
 
+<style lang="css" scoped>
+calcite-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+
 <script setup lang="ts">
 import "@arcgis/core/assets/esri/themes/light/main.css";
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-expand";
 import "@arcgis/map-components/components/arcgis-legend";
+import "@esri/calcite-components/components/calcite-loader";
 
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer.js";
 
 const filter = useRoute().query.filter;
+const arcgisViewReady = ref(false);
 
 function arcgisViewReadyChangeHandler(
   event: HTMLArcgisMapElement["arcgisViewReadyChange"],
@@ -37,6 +49,7 @@ function arcgisViewReadyChangeHandler(
 
   layer.when(() => {
     element.extent = layer.fullExtent!;
+    arcgisViewReady.value = true;
   });
 }
 </script>
