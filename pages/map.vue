@@ -8,6 +8,7 @@
     </arcgis-expand>
   </arcgis-map>
 </template>
+
 <script setup lang="ts">
 import "@arcgis/core/assets/esri/themes/light/main.css";
 import "@arcgis/map-components/components/arcgis-map";
@@ -32,7 +33,7 @@ function arcgisViewReadyChangeHandler(
     layer.definitionExpression = `fuel1 = '${filter}'`;
   }
 
-  element.addLayer(layer);
+  element.map.layers.add(layer);
 
   layer.when(() => {
     element.extent = layer.fullExtent!;
