@@ -1,4 +1,4 @@
-import { executeQueryJSON } from "@arcgis/core/rest/query";
+import { executeQueryJSON } from "@arcgis/core/rest/query.js";
 
 const PLANT_URL =
   "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/PowerPlants_WorldResourcesInstitute/FeatureServer/0";
