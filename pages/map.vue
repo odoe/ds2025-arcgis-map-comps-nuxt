@@ -27,11 +27,12 @@ import "@arcgis/map-components/components/arcgis-legend";
 import "@esri/calcite-components/components/calcite-loader";
 
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer.js";
+import { when } from "@arcgis/core/core/reactiveUtils.js";
 
 const filter = useRoute().query.filter;
 const arcgisViewReady = ref(false);
 
-function arcgisViewReadyChangeHandler(
+async function arcgisViewReadyChangeHandler(
   event: HTMLArcgisMapElement["arcgisViewReadyChange"],
 ) {
   const element = event.target;
@@ -47,9 +48,20 @@ function arcgisViewReadyChangeHandler(
 
   element.map.layers.add(layer);
 
+  const layerView = await element.whenLayerView(layer);
+
+  when(
+    () => !layerView.updating,
+    () => {
+      arcgisViewReady.value = true;
+    },
+    {
+      once: true,
+    },
+  );
+
   layer.when(() => {
     element.extent = layer.fullExtent!;
-    arcgisViewReady.value = true;
   });
 }
 </script>
